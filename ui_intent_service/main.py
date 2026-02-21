@@ -5,9 +5,19 @@ from pydantic import BaseModel
 from models.encoder import encode_text
 from models.ui_intent_model import UIIntentModel
 from training.dataset import DEFAULT_CATEGORY_MAP, DEFAULT_COMPLEXITY_MAP, DEFAULT_COMPONENTS
+from planner.ui_planner import generate_ui_plan
+from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize FastAPI app
 app = FastAPI(title="UI Intent Service")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Setup inference device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -30,6 +40,10 @@ INV_COMPLEXITY_MAP = {v: k for k, v in DEFAULT_COMPLEXITY_MAP.items()}
 
 class IntentRequest(BaseModel):
     prompt: str
+
+class PlanRequest(BaseModel):
+    prompt: str
+    seed: int | None = None
 
 @app.get("/health")
 def health_check():
@@ -93,6 +107,16 @@ def predict_intent(request: IntentRequest):
             "section_budget": 6,
             "needs_clarification": False
         }
+
+@app.post("/plan")
+def create_plan(request: PlanRequest):
+    # Internally call existing prediction logic directly
+    prediction_output = predict_intent(IntentRequest(prompt=request.prompt))
+    
+    # Pass prediction output into generate_ui_plan
+    ui_plan = generate_ui_plan(prediction_output, seed=request.seed)
+    
+    return ui_plan
 
 if __name__ == "__main__":
     import uvicorn

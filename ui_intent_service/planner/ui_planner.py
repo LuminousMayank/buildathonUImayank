@@ -27,72 +27,77 @@ def generate_ui_plan(prediction_output: dict, seed: int | None = None) -> dict:
     else:
         budget = 6
         
-    # C & D) Mandatory Sections & Component Selection
-    mandatory = set()
-    if cat_label == "portfolio":
-        mandatory.update(["hero", "contactForm"])
-    elif cat_label == "landing":
-        mandatory.add("hero")
-    elif cat_label == "dashboard":
-        # Dashboard must include chart or table. Check if any exists in prediction.
-        has_chart_table = any(c.get("name") in ["chart", "table"] for c in components_data)
-        if not has_chart_table:
-            mandatory.add("chart")  # Fallback to chart if neither is predicted
-            
-    # Sort predicted components descending by probability
+    # 1. Determine Layout Mode
+    layout_mode = "dashboard" if cat_label == "dashboard" else "landing"
+    
+    # 2. Base Templates (ensuring standard templates requested)
+    if layout_mode == "dashboard":
+        if comp_label == "simple":
+            base_template = ["hero", "kpiTiles", "chartPanel"]
+            budget = max(budget, 3)
+        elif comp_label == "rich":
+            base_template = ["hero", "kpiTiles", "chartPanel", "table", "projectsGrid", "footer"]
+            budget = max(budget, 6)
+        else: # standard
+            base_template = ["hero", "kpiTiles", "chartPanel", "footer"]
+            budget = max(budget, 4)
+    else: # landing (portfolio/landing)
+        if comp_label == "simple":
+            base_template = ["hero", "featuresRow", "footer"]
+            budget = max(budget, 3)
+        elif comp_label == "rich":
+            base_template = ["hero", "featuresRow", "projectsGrid", "kpiTiles", "ctaBand", "contactForm", "footer"]
+            budget = max(budget, 7)
+        else: # standard
+            base_template = ["hero", "featuresRow", "kpiTiles", "ctaBand", "footer"]
+            budget = max(budget, 5)
+
+    # 3. Component Selection (Merge predicted components up to budget)
+    selected_names = list(base_template)
+    
+    # Sort ML inferred components descending by probability
     sorted_comps = sorted(components_data, key=lambda x: x.get("prob", 0.0), reverse=True)
     
-    # Start building our selected components list
-    selected_names = []
-    
-    # 1. Ensure mandatory items are placed first
-    for m in mandatory:
-        selected_names.append(m)
-        
-    # 2. Fill the rest of the budget with predicted items
     for c in sorted_comps:
         if len(selected_names) >= budget:
             break
         c_name = c.get("name")
         if c_name not in selected_names:
             selected_names.append(c_name)
-            
-    # E) Section Ordering Rules
-    # - hero always first if present
-    # - contactForm near end
-    # - footer always last
+
+    # 4. Enforce Unified Section Ordering Rules
+    # Master dictionary for standard logical UI sorting weight
+    master_order = {
+        "hero": 1,
+        "featuresRow": 2,
+        "features": 3,
+        "projectsGrid": 4,
+        "gallery": 5,
+        "kpiTiles": 6,
+        "kpiCards": 7,
+        "chartPanel": 8,
+        "chart": 9,
+        "table": 10,
+        "ctaBand": 11,
+        "contactForm": 12,
+        "footer": 99
+    }
     
-    final_ordered = []
-    has_hero = "hero" in selected_names
-    has_contact = "contactForm" in selected_names
-    has_footer = "footer" in selected_names
+    # Safely sort the selected names using the master dict (fallbacks to end if unknown ML label)
+    final_ordered = sorted(selected_names, key=lambda x: master_order.get(x, 50))
     
-    if has_hero:
-        final_ordered.append("hero")
-        selected_names.remove("hero")
-        
-    if has_contact:
-        selected_names.remove("contactForm")
-        
-    if has_footer:
-        selected_names.remove("footer")
-        
-    # Add remaining sections in middle
-    final_ordered.extend(selected_names)
-    
-    # Add contactForm and footer at the end respectively
-    if has_contact:
-        final_ordered.append("contactForm")
-    if has_footer:
-        final_ordered.append("footer")
-        
-    # Format into sections payload
+    # Format into structured payload assigning deterministic variants safely
     sections = []
     for s_name in final_ordered:
-        # Assign a random display variant deterministically depending on seed
+        # Give 'hero' the 'compact' variant specifically on dashboard if standard/rich
+        if layout_mode == "dashboard" and s_name == "hero":
+            var = "compact"
+        else:
+            var = random.choice(["v1", "v2", "v3"])
+            
         sections.append({
             "type": s_name,
-            "variant": random.choice(["v1", "v2", "v3"])
+            "variant": var
         })
         
     # F) Design DNA
@@ -104,8 +109,9 @@ def generate_ui_plan(prediction_output: dict, seed: int | None = None) -> dict:
     }
     
     return {
-        "layout": "stack" if comp_label == "simple" else "responsive_grid",
-        "section_budget": budget,
+        "layout": cat_label,
+        "layout_mode": layout_mode,
+        "section_budget": len(sections),
         "needs_clarification": needs_clarification,
         "sections": sections,
         "designDNA": design_dna
