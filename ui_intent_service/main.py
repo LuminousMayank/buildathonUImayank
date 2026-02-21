@@ -7,6 +7,8 @@ from models.ui_intent_model import UIIntentModel
 from training.dataset import DEFAULT_CATEGORY_MAP, DEFAULT_COMPLEXITY_MAP, DEFAULT_COMPONENTS
 from planner.ui_planner import generate_ui_plan
 from fastapi.middleware.cors import CORSMiddleware
+import asyncio
+from services.llm_client import generate_marketing_copy
 
 # Initialize FastAPI app
 app = FastAPI(title="UI Intent Service")
@@ -44,6 +46,11 @@ class IntentRequest(BaseModel):
 class PlanRequest(BaseModel):
     prompt: str
     seed: int | None = None
+
+class GenerateCopyRequest(BaseModel):
+    prompt: str
+    layout_mode: str
+    sections: list
 
 @app.get("/health")
 def health_check():
@@ -114,9 +121,41 @@ def create_plan(request: PlanRequest):
     prediction_output = predict_intent(IntentRequest(prompt=request.prompt))
     
     # Pass prediction output into generate_ui_plan
-    ui_plan = generate_ui_plan(prediction_output, seed=request.seed)
+    ui_plan = generate_ui_plan(prediction_output, prompt=request.prompt, seed=request.seed)
     
+    # Fast keyword intercepts to bypass PyTorch frozen weights for new modules
+    prompt_lower = request.prompt.lower()
+    for sec in ui_plan.get("sections", []):
+        if "fullscreen" in prompt_lower and sec["type"] == "hero":
+            sec["type"] = "fullscreenHero"
+        if "bento" in prompt_lower and sec["type"] in ["features", "featuresRow"]:
+            sec["type"] = "bentoGrid"
+        if "marquee" in prompt_lower and sec["type"] in ["projectsGrid", "contactForm", "ctaBand", "footer"]:
+            sec["type"] = "marqueeBand"
+        if "split" in prompt_lower and sec["type"] in ["projectsGrid", "featuresRow", "features"]:
+            sec["type"] = "splitReveal"
+        if "gallery" in prompt_lower and sec["type"] in ["projectsGrid", "featuresRow", "features", "marqueeBand"]:
+            sec["type"] = "horizontalGallery"
+            
     return ui_plan
+
+@app.post("/generate-copy")
+async def generate_copy(request: GenerateCopyRequest):
+    try:
+        content = await asyncio.wait_for(
+            generate_marketing_copy(
+                prompt=request.prompt,
+                layout_mode=request.layout_mode,
+                sections=request.sections
+            ),
+            timeout=8.0
+        )
+        return content
+    except asyncio.TimeoutError:
+        return {}
+    except Exception as e:
+        print(f"Generate copy failed: {e}")
+        return {}
 
 if __name__ == "__main__":
     import uvicorn
