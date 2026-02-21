@@ -1,0 +1,59 @@
+text,category,complexity,components
+"I need a minimal graphic designer site with some past works.",portfolio,simple,hero|projectsGrid
+"A photography site to show my pictures and let people email me.",portfolio,simple,hero|gallery|contactForm
+"A software dev portfolio with my github projects and a bio.",portfolio,simple,hero|projectsGrid
+"I need a standard UX designer portfolio with a hero section, grid of my case studies, and a contact form.",portfolio,standard,hero|projectsGrid|contactForm
+"Create a standard 3D artist portfolio featuring a gallery of my renders and a form to hire me.",portfolio,standard,hero|gallery|contactForm
+"A web developer portfolio with a list of features I offer, my projects, and a contact form.",portfolio,standard,hero|features|projectsGrid|contactForm
+"I want a rich, highly animated creative director portfolio with full-screen galleries, project showcases, and interactive contact forms.",portfolio,rich,hero|gallery|projectsGrid|contactForm
+"A rich multimedia portfolio showing videos, a complex project grid, and highlighted features of my agency.",portfolio,rich,hero|projectsGrid|gallery|features
+"A simple freelance writer site with just a hero and a way to reach out.",portfolio,simple,hero|contactForm
+"An illustrator's portfolio displaying artwork in a simple masonry gallery.",portfolio,simple,hero|gallery
+"Standard copywriter portfolio with services features, a project grid of past articles, and contact info.",portfolio,standard,hero|features|projectsGrid|contactForm
+"Music producer portfolio with a rich gallery of album covers, project grid of tracks, and a booking form.",portfolio,rich,hero|gallery|projectsGrid|contactForm
+"A model's standard comp card website with a large gallery and contact information.",portfolio,standard,hero|gallery|contactForm
+"An architect's rich portfolio with expansive image galleries, project grids, and detailed feature lists of their design philosophy.",portfolio,rich,hero|gallery|projectsGrid|features
+"A short student portfolio highlighting class projects.",portfolio,simple,hero|projectsGrid
+"A full-scale agency portfolio with animated features, large galleries, detailed project grids, and a comprehensive contact form.",portfolio,rich,hero|features|gallery|projectsGrid|contactForm
+"A simple landing page for an upcoming mobile app launch.",landing,simple,hero
+"A waitlist landing page for a new AI tool with a signup form.",landing,simple,hero|contactForm
+"A product landing page with a hero section and three main features.",landing,simple,hero|features
+"A standard SaaS landing page with a hero header, key features, and a contact form.",landing,standard,hero|features|contactForm
+"Landing page for a local gym highlighting their facilities and a form to join.",landing,standard,hero|gallery|contactForm
+"A webinar registration landing page with speaker features and a signup form.",landing,standard,hero|features|contactForm
+"A rich B2B enterprise software landing page with interactive features, data charts showcasing ROI, and a lead capture form.",landing,rich,hero|features|chart|contactForm
+"A rich event landing page with a large gallery of past events, feature list of upcoming talks, and ticket purchase form.",landing,rich,hero|gallery|features|contactForm
+"A standard eBook download landing page with an overview of chapters and a form.",landing,standard,hero|features|contactForm
+"A simple coaching service landing page with intro and contact.",landing,simple,hero|contactForm
+"A detailed rich landing page for a hardware product with feature breakdowns, image gallery, and pre-order form.",landing,rich,hero|features|gallery|contactForm
+"A single page landing for a restaurant menu with a few photos and a reservation form.",landing,standard,hero|gallery|contactForm
+"A minimalist app promo page.",landing,simple,hero
+"A rich marketing campaign landing page with an interactive ROI chart, key product features, and a contact section.",landing,rich,hero|chart|features|contactForm
+"A non-profit donation landing page with mission features and a form.",landing,standard,hero|features|contactForm
+"A simple contest entry landing page.",landing,simple,hero|contactForm
+"A rich tech startup launch page with animated features, data charts, and lead gen form.",landing,rich,hero|features|chart|contactForm
+"A simple analytics dashboard showing just the top level KPI cards.",dashboard,simple,kpiCards
+"A basic admin panel with a list of users in a table.",dashboard,simple,table
+"A sales dashboard with a revenue chart and total sales KPIs.",dashboard,simple,kpiCards|chart
+"A standard e-commerce admin dashboard with recent orders table, sales charts, and top-level KPIs.",dashboard,standard,kpiCards|chart|table
+"A marketing dashboard tracking campaign performance with charts and a table of top channels.",dashboard,standard,kpiCards|chart|table
+"A standard HR dashboard showing employee attendance KPIs and a staff roster table.",dashboard,standard,kpiCards|table
+"A rich financial dashboard with complex interactive charts, detailed transaction tables, and numerous KPI cards.",dashboard,rich,kpiCards|chart|table
+"A rich project management dashboard featuring task tracking tables, burndown charts, and progress KPIs.",dashboard,rich,kpiCards|chart|table|features
+"A healthcare admin dashboard with patient records in a large table, health trend charts, and hospital capacity KPIs.",dashboard,rich,kpiCards|chart|table
+"A standard server monitoring dashboard with uptime charts and active alerts table.",dashboard,standard,kpiCards|chart|table
+"A simple personal finance tracker dashboard displaying expense charts.",dashboard,simple,chart
+"A comprehensive rich logistics dashboard with shipment tracking tables, route efficiency charts, and fleet status KPIs.",dashboard,rich,kpiCards|chart|table
+"An inventory management dashboard showing stock levels in a table and sales velocity charts.",dashboard,standard,kpiCards|chart|table
+"A basic to-do list admin view.",dashboard,simple,table
+"A rich cryptocurrency portfolio dashboard with live price charts, asset tables, and total holding KPIs.",dashboard,rich,kpiCards|chart|table
+"A standard customer support dashboard with a table of open tickets and average response time KPIs.",dashboard,standard,kpiCards|table
+"A rich education platform dashboard for teachers showing student progress charts, grade tables, and class average KPIs.",dashboard,rich,kpiCards|chart|table
+"A sleek portfolio interface displaying a collection of UX case studies, project stats via KPIs, and an info block.",portfolio,rich,hero|projectsGrid|kpiCards|features
+"An expansive dashboard offering a comprehensive view of cloud server analytics including multi-axis charts, hardware metric KPIs, and server lists.",dashboard,rich,kpiCards|chart|table
+"A simple landing page for my indie band showing our hero image, a tour schedule table, and an email list form.",landing,standard,hero|table|contactForm
+"Rich landing experience for automotive luxury showcasing gallery images, premium features, dynamic speed charts, and leads contact form.",landing,rich,hero|gallery|chart|features|contactForm
+"An administrative view showing user retention rates over time with lines charts and an overview table.",dashboard,standard,chart|table
+"Build a dashboard giving me insight to weekly sales, an items table, features to change user roles, and large numbers.",dashboard,rich,chart|table|features|kpiCards
+"Standard software deployment landing page exhibiting platform features, simple charts, and a CTA contact section.",landing,standard,hero|features|chart|contactForm
+"A portfolio for a financial planner combining interactive success rate charts, brief service features, and ways to get in touch.",portfolio,standard,hero|chart|features|contactForm
