@@ -1,0 +1,18 @@
+# Environments
+venv/
+env/
+.venv/
+.env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Models and downloaded data
+*.pt
+*.pth
+*.onnx
+
+# Mac specific
+.DS_Store
