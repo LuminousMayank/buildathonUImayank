@@ -123,19 +123,35 @@ def create_plan(request: PlanRequest):
     # Pass prediction output into generate_ui_plan
     ui_plan = generate_ui_plan(prediction_output, prompt=request.prompt, seed=request.seed)
     
-    # Fast keyword intercepts to bypass PyTorch frozen weights for new modules
+    # Fast keyword intercepts to bypass PyTorch frozen weights for new modules (Ensure 1-to-1 max overrides!)
     prompt_lower = request.prompt.lower()
+    injected_overrides = set()
+    
     for sec in ui_plan.get("sections", []):
-        if "fullscreen" in prompt_lower and sec["type"] == "hero":
+        if "fullscreen" in prompt_lower and sec["type"] == "hero" and "fullscreenHero" not in injected_overrides:
             sec["type"] = "fullscreenHero"
-        if "bento" in prompt_lower and sec["type"] in ["features", "featuresRow"]:
+            injected_overrides.add("fullscreenHero")
+        elif "bento" in prompt_lower and sec["type"] in ["features", "featuresRow"] and "bentoGrid" not in injected_overrides:
             sec["type"] = "bentoGrid"
-        if "marquee" in prompt_lower and sec["type"] in ["projectsGrid", "contactForm", "ctaBand", "footer"]:
+            injected_overrides.add("bentoGrid")
+        elif "marquee" in prompt_lower and sec["type"] in ["projectsGrid", "contactForm", "ctaBand"] and "marqueeBand" not in injected_overrides:
             sec["type"] = "marqueeBand"
-        if "split" in prompt_lower and sec["type"] in ["projectsGrid", "featuresRow", "features"]:
+            injected_overrides.add("marqueeBand")
+        elif "split" in prompt_lower and sec["type"] in ["projectsGrid", "featuresRow", "features"] and "splitReveal" not in injected_overrides:
             sec["type"] = "splitReveal"
-        if "gallery" in prompt_lower and sec["type"] in ["projectsGrid", "featuresRow", "features", "marqueeBand"]:
+            injected_overrides.add("splitReveal")
+        elif "gallery" in prompt_lower and sec["type"] in ["projectsGrid", "featuresRow", "features"] and "horizontalGallery" not in injected_overrides:
             sec["type"] = "horizontalGallery"
+            injected_overrides.add("horizontalGallery")
+            
+    # Final deduplication loop as a failsafe
+    seen = set()
+    deduped_sections = []
+    for s in ui_plan.get("sections", []):
+        if s["type"] not in seen:
+            seen.add(s["type"])
+            deduped_sections.append(s)
+    ui_plan["sections"] = deduped_sections
             
     return ui_plan
 

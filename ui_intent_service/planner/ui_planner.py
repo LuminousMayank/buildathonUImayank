@@ -119,12 +119,33 @@ def generate_ui_plan(prediction_output: dict, prompt: str = "", seed: int | None
     # Sort ML inferred components descending by probability
     sorted_comps = sorted(components_data, key=lambda x: x.get("prob", 0.0), reverse=True)
     
+    # Map component aliases to canonical names to prevent React 1-to-many renderer duplication
+    canonical_map = {
+        "marquee": "marqueeBand",
+        "bento": "bentoGrid",
+        "features": "featuresRow",
+        "split": "splitReveal",
+        "kpiCards": "kpiTiles",
+        "chart": "chartPanel",
+        "gallery": "horizontalGallery",
+        "cta": "ctaBand"
+    }
+
     for c in sorted_comps:
         if len(selected_names) >= budget:
             break
         c_name = c.get("name")
+        c_name = canonical_map.get(c_name, c_name)  # Normalize
+        
         if layout_mode == "application" and c_name in ["hero", "fullscreenHero"]:
             continue
+            
+        # Also ensure we don't have multiple heroes
+        if c_name == "hero" and "fullscreenHero" in selected_names:
+            continue
+        if c_name == "fullscreenHero" and "hero" in selected_names:
+            continue
+            
         if c_name not in selected_names:
             selected_names.append(c_name)
 
