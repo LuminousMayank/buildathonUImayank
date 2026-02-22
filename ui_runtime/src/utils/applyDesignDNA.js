@@ -50,16 +50,8 @@ export function applyDesignDNA(dna, layoutMode) {
             if (isDarkBase) classes.push('theme-invert');
         } else if (dna.theme === 'theme-dark') {
             if (!isDarkBase) classes.push('theme-invert');
-        } else if (dna.theme === 'theme-neon') {
-            classes.push(!isDarkBase ? 'theme-invert-neon' : 'theme-neon');
-        } else if (dna.theme === 'theme-ocean') {
-            classes.push(!isDarkBase ? 'theme-invert-ocean' : 'theme-ocean');
-        } else if (dna.theme === 'theme-forest') {
-            classes.push(!isDarkBase ? 'theme-invert-forest' : 'theme-forest');
-        } else if (dna.theme === 'theme-rose') {
-            classes.push(!isDarkBase ? 'theme-invert-rose' : 'theme-rose');
-        } else if (dna.theme === 'theme-monochrome') {
-            classes.push('theme-monochrome');
+        } else {
+            classes.push(dna.theme);
         }
     }
 

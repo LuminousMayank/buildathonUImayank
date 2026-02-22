@@ -93,7 +93,7 @@ const FeatureRow = ({ variant, layoutMode }) => {
                     return (
                         <div
                             key={idx}
-                            className="group flex flex-col p-8 rounded-2xl bg-current bg-opacity-[0.03] border border-current border-opacity-10 shadow-sm backdrop-blur-md hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-[0.07] transition-all duration-300 ease-out relative overflow-hidden"
+                            className="group flex flex-col p-8 rounded-2xl bg-slate-500/5 border border-slate-500/10 shadow-sm backdrop-blur-md hover:-translate-y-2 hover:shadow-2xl hover:bg-slate-500/10 transition-all duration-300 ease-out relative overflow-hidden"
                         >
                             {/* Subtle background glow effect appearing on hover */}
                             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>

@@ -62,7 +62,7 @@ const KpiTiles = ({ variant, layoutMode, content, setContent, editMode }) => {
                 {tilesToRender.map((kpi, idx) => (
                     <div
                         key={idx}
-                        className={`flex flex-col p-6 rounded-xl bg-current bg-opacity-[0.02] ${editMode ? 'border-dashed border-2 border-indigo-500/30' : 'border border-current border-opacity-10'} shadow-sm backdrop-blur-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
+                        className={`flex flex-col p-6 rounded-xl bg-slate-500/5 ${editMode ? 'border-dashed border-2 border-indigo-500/30' : 'border border-slate-500/10'} shadow-sm backdrop-blur-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
                     >
                         {/* Shimmer line effect on hover */}
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

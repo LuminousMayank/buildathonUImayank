@@ -10,7 +10,7 @@ const ProjectsGrid = ({ variant }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {dummyProjects.map((item) => (
                         <div key={item} className="group cursor-pointer">
-                            <div className="aspect-[4/3] bg-current opacity-10 rounded-lg mb-4 overflow-hidden relative transition hover:opacity-20"></div>
+                            <div className="aspect-[4/3] bg-slate-500/10 rounded-lg mb-4 overflow-hidden relative transition hover:opacity-20"></div>
                             <h3 className="font-semibold text-lg transition opacity-90 group-hover:opacity-100">Project Title {item}</h3>
                             <p className="text-sm opacity-60">UI/UX Design</p>
                         </div>
@@ -52,7 +52,7 @@ const ProjectsGrid = ({ variant }) => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {dummyProjects.map((item) => (
                     <div key={item} className={`border border-current opacity-30 relative overflow-hidden group ${item === 1 || item === 4 ? 'col-span-2 row-span-2 aspect-square' : 'aspect-square'}`}>
-                        <div className="absolute inset-0 bg-current opacity-0 group-hover:opacity-80 flex items-center justify-center transition duration-500">
+                        <div className="absolute inset-0 bg-slate-900 opacity-0 group-hover:opacity-80 flex items-center justify-center transition duration-500">
                             <div className="text-center translate-y-4 group-hover:translate-y-0 transition duration-500 text-white">
                                 <h3 className="font-bold text-xl mb-1">Project {item}</h3>
                                 <p className="text-sm">View Details</p>
