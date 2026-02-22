@@ -474,7 +474,7 @@ function App() {
                   </div>
                 </div>
 
-                <div key={seed} className={`w-full relative flex flex-col min-h-[500px] transition-all duration-500 ease-out ${applyDesignDNA(plan?.designDNA)} 
+                <div key={seed} className={`w-full relative flex flex-col min-h-[500px] transition-all duration-500 ease-out ${applyDesignDNA(plan?.designDNA, plan?.layout_mode)} 
                   ${plan.layout_mode === 'dashboard' ? 'bg-[#0f1115] text-slate-100' :
                     plan.layout_mode === 'creative' ? 'bg-[#050505] text-slate-100' :
                       'bg-white text-slate-900'

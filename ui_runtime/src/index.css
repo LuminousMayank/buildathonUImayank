@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 @layer utilities {
-    /* Dynamic Aesthetic Themes via Global Engine Primitives */
 
-    .theme-light {
+    /* Foundation Filters */
+    .theme-invert {
         filter: invert(1) hue-rotate(180deg) brightness(1.1);
     }
 
-    /* Double invert media elements so they don't look negative */
-    .theme-light img,
-    .theme-light video,
-    .theme-light .avatar {
+    .theme-invert img,
+    .theme-invert video,
+    .theme-invert .avatar {
         filter: invert(1) hue-rotate(180deg);
     }
 
+    /* Standard Dark-base Filters */
     .theme-neon {
         filter: contrast(120%) saturate(160%) hue-rotate(275deg);
     }
@@ -30,6 +30,39 @@
 
     .theme-rose {
         filter: hue-rotate(310deg) saturate(140%);
+    }
+
+    /* Inverted Light-base Filters (Forces Dark first, then rotates) */
+    .theme-invert-neon {
+        filter: invert(0.95) hue-rotate(180deg) contrast(150%) saturate(150%) hue-rotate(275deg);
+    }
+
+    .theme-invert-ocean {
+        filter: invert(0.95) hue-rotate(180deg) saturate(150%) hue-rotate(170deg);
+    }
+
+    .theme-invert-forest {
+        filter: invert(0.95) hue-rotate(180deg) saturate(150%) hue-rotate(90deg);
+    }
+
+    .theme-invert-rose {
+        filter: invert(0.95) hue-rotate(180deg) saturate(150%) hue-rotate(310deg);
+    }
+
+    /* Prevent negative media issues */
+    .theme-invert-neon img,
+    .theme-invert-neon video,
+    .theme-invert-neon .avatar,
+    .theme-invert-ocean img,
+    .theme-invert-ocean video,
+    .theme-invert-ocean .avatar,
+    .theme-invert-forest img,
+    .theme-invert-forest video,
+    .theme-invert-forest .avatar,
+    .theme-invert-rose img,
+    .theme-invert-rose video,
+    .theme-invert-rose .avatar {
+        filter: invert(1) hue-rotate(180deg);
     }
 
     .theme-monochrome {

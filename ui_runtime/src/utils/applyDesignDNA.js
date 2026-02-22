@@ -1,10 +1,11 @@
-export function applyDesignDNA(dna) {
+export function applyDesignDNA(dna, layoutMode) {
     // Default values when no plan exists
     if (!dna) {
         return 'bg-gray-50 text-gray-800 font-sans p-4 pt-20';
     }
 
     const classes = [];
+    const isDarkBase = layoutMode === 'creative' || layoutMode === 'dashboard';
 
     // 1. Map palette to Tailwind theme classes
     if (dna.palette === 'dark') {
@@ -45,7 +46,21 @@ export function applyDesignDNA(dna) {
 
     // 5. Aesthetic Theme Sub-Layer (CSS Primitive Overrides)
     if (dna.theme) {
-        classes.push(dna.theme);
+        if (dna.theme === 'theme-light') {
+            if (isDarkBase) classes.push('theme-invert');
+        } else if (dna.theme === 'theme-dark') {
+            if (!isDarkBase) classes.push('theme-invert');
+        } else if (dna.theme === 'theme-neon') {
+            classes.push(!isDarkBase ? 'theme-invert-neon' : 'theme-neon');
+        } else if (dna.theme === 'theme-ocean') {
+            classes.push(!isDarkBase ? 'theme-invert-ocean' : 'theme-ocean');
+        } else if (dna.theme === 'theme-forest') {
+            classes.push(!isDarkBase ? 'theme-invert-forest' : 'theme-forest');
+        } else if (dna.theme === 'theme-rose') {
+            classes.push(!isDarkBase ? 'theme-invert-rose' : 'theme-rose');
+        } else if (dna.theme === 'theme-monochrome') {
+            classes.push('theme-monochrome');
+        }
     }
 
     return classes.join(' ');
