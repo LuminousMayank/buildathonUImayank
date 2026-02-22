@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    /* Dynamic Aesthetic Themes via Global Engine Primitives */
+
+    .theme-light {
+        filter: invert(1) hue-rotate(180deg) brightness(1.1);
+    }
+
+    /* Double invert media elements so they don't look negative */
+    .theme-light img,
+    .theme-light video,
+    .theme-light .avatar {
+        filter: invert(1) hue-rotate(180deg);
+    }
+
+    .theme-neon {
+        filter: contrast(120%) saturate(160%) hue-rotate(275deg);
+    }
+
+    .theme-ocean {
+        filter: hue-rotate(170deg) saturate(120%);
+    }
+
+    .theme-forest {
+        filter: hue-rotate(90deg) saturate(130%);
+    }
+
+    .theme-rose {
+        filter: hue-rotate(310deg) saturate(140%);
+    }
+
+    .theme-monochrome {
+        filter: grayscale(100%) contrast(110%);
+    }
+}

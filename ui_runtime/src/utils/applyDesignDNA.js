@@ -43,5 +43,10 @@ export function applyDesignDNA(dna) {
         classes.push('rounded-xl');
     }
 
+    // 5. Aesthetic Theme Sub-Layer (CSS Primitive Overrides)
+    if (dna.theme) {
+        classes.push(dna.theme);
+    }
+
     return classes.join(' ');
 }

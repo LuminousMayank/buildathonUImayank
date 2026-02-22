@@ -44,6 +44,32 @@ def generate_ui_plan(prediction_output: dict, prompt: str = "", seed: int | None
         layout_mode = "creative"
     else:
         layout_mode = "landing"
+        
+    # 1.5 Determine Aesthetic Theme Flag
+    theme_map = {
+        "light": "theme-light",
+        "white": "theme-light",
+        "clean": "theme-light",
+        "neon": "theme-neon",
+        "cyber": "theme-neon",
+        "ocean": "theme-ocean",
+        "blue": "theme-ocean",
+        "forest": "theme-forest",
+        "green": "theme-forest",
+        "nature": "theme-forest",
+        "rose": "theme-rose",
+        "red": "theme-rose",
+        "monochrome": "theme-monochrome",
+        "grayscale": "theme-monochrome",
+        "black": "theme-dark",
+        "dark": "theme-dark"
+    }
+    
+    selected_theme = "theme-dark" # Fallback/Default
+    for kw, cls in theme_map.items():
+        if kw in prompt_lower:
+            selected_theme = cls
+            break
     
     # 2. Base Templates (ensuring standard templates requested)
     if layout_mode == "application":
@@ -153,7 +179,8 @@ def generate_ui_plan(prediction_output: dict, prompt: str = "", seed: int | None
         "tone": random.choice(["minimal", "bold", "corporate"]),
         "palette": random.choice(["blue", "dark", "neutral"]),
         "density": random.choice(["compact", "spacious"]),
-        "radius": random.choice(["sm", "md", "lg"])
+        "radius": random.choice(["sm", "md", "lg"]),
+        "theme": selected_theme
     }
     
     # G) Explanation
