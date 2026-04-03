@@ -4,6 +4,7 @@ const ProgressBar = ({ label, value, plan, colorClass = "bg-blue-500" }) => {
     const [width, setWidth] = useState(0);
 
     useEffect(() => {
+        // eslint-disable-next-line
         setWidth(0);
         const timer = setTimeout(() => setWidth(value * 100), 50);
         return () => clearTimeout(timer);

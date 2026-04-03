@@ -231,12 +231,45 @@ def generate_ui_plan(prediction_output: dict, prompt: str = "", seed: int | None
         "ml_reason": ml_reason
     }
 
+    # H) Generate AST Tree
+    tree_children = []
+    for sec in sections:
+        s_type = sec["type"]
+        
+        # Determine block type
+        if s_type == "hero":
+            block_type = "HeroBlock"
+        else:
+            block_type = s_type[0].upper() + s_type[1:]
+            
+        # Generate stable pseudo-random IDs
+        sec_rnd = "".join(random.choices("abcdef0123456789", k=6))
+        blk_rnd = "".join(random.choices("abcdef0123456789", k=6))
+        
+        tree_children.append({
+            "id": f"sec_{s_type}_{sec_rnd}",
+            "type": "Section",
+            "children": [
+                {
+                    "id": f"blk_{s_type}_{blk_rnd}",
+                    "type": block_type
+                }
+            ]
+        })
+        
+    tree = {
+        "type": "Page",
+        "id": "page",
+        "children": tree_children
+    }
+
     return {
         "layout": cat_label,
         "layout_mode": layout_mode,
         "section_budget": len(sections),
         "needs_clarification": needs_clarification,
         "sections": sections,
+        "tree": tree,
         "designDNA": design_dna,
         "explanation": explanation
     }

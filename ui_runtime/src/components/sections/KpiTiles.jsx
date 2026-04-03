@@ -7,7 +7,7 @@ const defaultKpiData = [
     { label: "Avg. Session Time", value: "4m 12s", growth: "-2.3%", isPositive: false, trendSymbol: "↓" }
 ];
 
-const KpiTiles = ({ variant, layoutMode, content, setContent, editMode }) => {
+const KpiTiles = ({ layoutMode, content, setContent, editMode }) => {
 
     // Safely parse content state array, mapping incoming values to visually rich default data (like trends) natively.
     const tilesToRender = Array.isArray(content?.kpiTiles) && content.kpiTiles.length > 0

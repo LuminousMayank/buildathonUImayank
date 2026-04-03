@@ -30,7 +30,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
 };
 
-const ChartPanel = ({ layoutMode, variant }) => {
+const ChartPanel = ({ layoutMode }) => {
     // Determine the sizing dynamically if it's rendered on a landing page vs naturally wrapped in a dashboard grid container natively by SectionRenderer logic.
     const isDashboard = layoutMode === 'dashboard';
     const paddingClass = isDashboard ? 'py-2 px-2' : 'py-12 px-6 border filter drop-shadow-lg';

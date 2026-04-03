@@ -1,5 +1,5 @@
 import torch
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 
 from models.encoder import encode_text
@@ -9,6 +9,7 @@ from planner.ui_planner import generate_ui_plan
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from services.llm_client import generate_marketing_copy
+from services.resume_parser import parse_resume_to_portfolio, extract_text_from_pdf, cleanse_text
 
 # Initialize FastAPI app
 app = FastAPI(title="UI Intent Service")
@@ -172,6 +173,58 @@ async def generate_copy(request: GenerateCopyRequest):
     except Exception as e:
         print(f"Generate copy failed: {e}")
         return {}
+
+class ParseResumeRequest(BaseModel):
+    resume_text: str
+
+@app.post("/parse-resume")
+async def parse_resume(request: ParseResumeRequest):
+    """Accept raw resume text and transform it into portfolio JSON."""
+    try:
+        portfolio_json = await parse_resume_to_portfolio(request.resume_text)
+        if "error" in portfolio_json:
+            return {"status": "error", "message": portfolio_json["error"]}
+        return {"status": "success", "data": portfolio_json}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.post("/upload")
+async def upload_resume(file: UploadFile = File(...)):
+    """
+    Accept a PDF resume file via multipart upload.
+    Extracts text server-side using pdfplumber, then transforms via LLM.
+    """
+    try:
+        # Validate file type
+        if not file.filename.lower().endswith('.pdf'):
+            return {"status": "error", "message": "Only PDF files are supported."}
+
+        # Read file bytes
+        file_bytes = await file.read()
+        if len(file_bytes) == 0:
+            return {"status": "error", "message": "Empty file uploaded."}
+
+        # Extract text from PDF server-side
+        raw_text = extract_text_from_pdf(file_bytes)
+        if not raw_text or len(raw_text.strip()) < 50:
+            return {
+                "status": "error",
+                "message": "Could not extract enough text from this PDF. It may be a scanned image."
+            }
+
+        # Transform via LLM
+        portfolio_json = await parse_resume_to_portfolio(raw_text)
+        if "error" in portfolio_json:
+            return {"status": "error", "message": portfolio_json["error"]}
+
+        return {
+            "status": "success",
+            "data": portfolio_json,
+            "chars_extracted": len(raw_text),
+        }
+    except Exception as e:
+        print(f"Upload processing failed: {e}")
+        return {"status": "error", "message": str(e)}
 
 if __name__ == "__main__":
     import uvicorn
